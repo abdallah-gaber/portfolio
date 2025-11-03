@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appID": "EKK9M2H3G4.com.linkdevelopment.ePalaceMobileApp",
+        "paths": ["/", "/*"]
+      }
+    ]
+  }
+}
