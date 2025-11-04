@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.linkdevelopment.ePalaceMobileApp",
+      "sha256_cert_fingerprints": [
+        "A4:66:ED:A9:C3:76:8E:D8:DC:1C:60:BD:08:7D:BF:21:BB:F3:20:AA:45:92:84:FC:ED:A2:D6:0A:D1:52:1D:8F"
+      ]
+    }
+  }
+]
