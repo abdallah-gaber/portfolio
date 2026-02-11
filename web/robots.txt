@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap (update with your production URL)
+# Sitemap: https://abdallahgaber.dev/sitemap.xml
