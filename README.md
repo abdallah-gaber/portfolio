@@ -82,7 +82,26 @@ lib/
 
 - **Build:** `flutter build web`
 - **Output:** `build/web/` (static assets + `index.html`, `main.dart.js`, etc.)
-- **Vercel:** Point the project root to the repo and set build command to `flutter build web` and output directory to `build/web`. Existing `vercel.json` and `.well-known/` are preserved at repo root for app links.
+
+### Vercel
+
+`vercel.json` is configured with:
+
+- **buildCommand:** `flutter build web`
+- **outputDirectory:** `build/web` (so Vercel serves the Flutter build, not the repo root)
+- **rewrites:** Paths without a file extension are rewritten to `/index.html` (SPA fallback so direct URLs and refresh work)
+- **headers:** Preserved for `apple-app-site-association` and `.well-known/`
+
+Vercel’s default build image does not include Flutter. In the project **Settings → Build & Development**:
+
+1. Set **Framework Preset** to **Other**.
+2. Set **Install Command** to one of:
+   - A command that installs Flutter (e.g. clone the Flutter SDK and run `flutter pub get`), or
+   - Use a [Flutter-compatible build image or community template](https://vercel.com/docs/deployments/configure-a-build) if available.
+3. Build Command and Output Directory are overridden by `vercel.json` (`flutter build web` and `build/web`).
+
+If you see **NOT_FOUND (404)** after deploy, the usual cause is the output directory not set to `build/web` (so `index.html` is not found). The rewrites fix 404s for in-app paths (e.g. opening `/about` directly).
+
 - **Analytics:** Firebase Analytics is set up; see **Firebase Analytics** above.
 
 ## License
