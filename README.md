@@ -31,7 +31,7 @@ cd build/web && python3 -m http.server 8080
 - **Featured projects:** Descriptions, screenshots (`imagePath`), and store links live in `lib/core/data/portfolio_data.dart` → `featuredProjects`.
 - **Archive projects:** Each item can have `name`, `role`, `androidUrl`, `iosUrl`, and `imagePath` (app icon). Cards show the icon when `imagePath` is set; store links open Play Store / App Store.
 - **SEO:** `web/sitemap.xml` and `web/robots.txt` point to `abdallahgaber.dev`. Update if your domain differs. OG image: `web/og_image.jpg` (referenced in `web/index.html`). Title, description, theme-color, and Twitter Card meta tags are set in `web/index.html`.
-- **Favicon & PWA:** Custom favicons in `web/`: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`. `manifest.json` uses theme `#0B1220` and these icons.
+- **Favicon & PWA:** Custom favicons in `web/`: `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`. `manifest.json` uses theme `#0B1220` and the android-chrome icons for PWA (no separate maskable icons).
 
 ## Firebase Analytics
 

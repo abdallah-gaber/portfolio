@@ -1,17 +1,1 @@
-{
-  "name": "Abdallah Gaber",
-  "short_name": "Abdallah Gaber",
-  "description": "Senior Mobile Team Lead (Flutter) – cross-platform apps.",
-  "start_url": ".",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0B1220",
-  "theme_color": "#0B1220",
-  "prefer_related_applications": false,
-  "icons": [
-    { "src": "android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/Icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "icons/Icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ]
-}
+{"name":"Abdallah Gaber","short_name":"Abdallah Gaber","description":"Senior Mobile Team Lead (Flutter) – cross-platform apps.","start_url":".","display":"standalone","orientation":"portrait-primary","background_color":"#0B1220","theme_color":"#0B1220","prefer_related_applications":false,"icons":[{"src":"android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"android-chrome-512x512.png","sizes":"512x512","type":"image/png"}]}
