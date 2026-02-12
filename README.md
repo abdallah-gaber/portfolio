@@ -25,20 +25,36 @@ cd build/web && python3 -m http.server 8080
 # Or use any static server; open http://localhost:8080
 ```
 
-## How to replace placeholders
+## Configuration (done / optional)
 
-All placeholders are marked with `TODO_` in code or comments. Replace them before going live.
+- **Profile & CV:** GitHub, LinkedIn, and CV download URL are set in `lib/core/constants/app_constants.dart`. `showGithubInHero` is `false` (GitHub icon hidden in hero); set to `true` to show it.
+- **Featured projects:** Descriptions, screenshots (`imagePath`), and store links live in `lib/core/data/portfolio_data.dart` → `featuredProjects`.
+- **Archive projects:** Each item can have `name`, `role`, `androidUrl`, `iosUrl`, and `imagePath` (app icon). Cards show the icon when `imagePath` is set; store links open Play Store / App Store.
+- **SEO:** `web/sitemap.xml` and `web/robots.txt` point to `abdallahgaber.dev`. Update if your domain differs. OG image: `web/og_image.jpg` (referenced in `web/index.html`).
 
-| Placeholder | Where | What to do |
-|------------|--------|------------|
-| **TODO_GITHUB_URL** | `lib/core/constants/app_constants.dart` | Set `githubUrl` to your GitHub profile URL. |
-| **TODO_LINKEDIN_URL** | Same file | Set `linkedInUrl` to your LinkedIn profile URL. |
-| **TODO_CV_PDF_URL** | Same file | Set `cvDownloadUrl` to the URL of your CV PDF (e.g. hosted file or link). |
-| **TODO_PROJECT_DESC** | `lib/core/data/portfolio_data.dart` | Replace placeholder descriptions in `featuredProjects` with one-line descriptions per app. |
-| **TODO_SCREENSHOT** | Same file + assets | Set `imagePath` for each featured project (e.g. `assets/images/placeholder_moc_epalace.png`) and add the image files under `assets/images/`. |
-| **TODO_METRICS** | N/A | If you add metrics later, use real data only; do not fabricate. |
-| **Sitemap domain** | `web/sitemap.xml` | Replace `https://abdallahgaber.dev/` with your production base URL if different. |
-| **robots.txt Sitemap** | `web/robots.txt` | Uncomment and set `Sitemap: https://abdallahgaber.dev/sitemap.xml` (or your domain). |
+## Firebase Analytics
+
+Analytics is wired with **Firebase** (script in `web/index.html`, init in `lib/main.dart`). To enable it:
+
+1. **Create a Firebase project**  
+   Go to [Firebase Console](https://console.firebase.google.com/) → Create project (or use existing) → turn on **Analytics** if prompted.
+
+2. **Add a Web app**  
+   In the project: Project settings (gear) → **Your apps** → **Add app** → choose **Web** (</>). Register the app; you’ll get a `firebaseConfig` object.
+
+3. **Connect this repo with FlutterFire**  
+   From the project root run:
+   ```bash
+   dart run flutterfire_cli:flutterfire configure
+   ```
+   Sign in if asked, pick the Firebase project, select **Web**. This generates `lib/firebase_options.dart` with your config (and keeps `web/index.html` scripts as-is).
+
+4. **Run / build**  
+   After that, `flutter run -d chrome` or `flutter build web` will use your config. The app logs an “app open” event when the site loads.
+
+**Where it lives:**  
+- **Scripts:** `web/index.html` (Firebase JS SDK).  
+- **Init & events:** `lib/main.dart` (Firebase.initializeApp + FirebaseAnalytics.instance.logAppOpen).
 
 ## How to add a new project
 
@@ -46,11 +62,11 @@ All placeholders are marked with `TODO_` in code or comments. Replace them befor
    Edit `lib/core/data/portfolio_data.dart`. In `featuredProjects`, add a `ProjectItem`:
    - `name`, `role`, `description`, `techHighlights`, `androidUrl` / `iosUrl`, optional `imagePath`.
 
-2. **Archive project (chip in the list)**  
-   In the same file, add a `ProjectItem` to `archiveProjects` with `name`, `role`, and optional `androidUrl` / `iosUrl` (set `isFeatured: false`; other fields can be omitted).
+2. **Archive project (card in the list)**  
+   In the same file, add a `ProjectItem` to `archiveProjects` with `name`, `role`, optional `androidUrl` / `iosUrl`, and optional `imagePath` (app icon). Set `isFeatured: false`. Cards with no store links appear dimmed; cards with links show Android/Apple icon buttons.
 
-3. **Screenshot**  
-   Add the image under `assets/images/` and reference it in `imagePath` (e.g. `assets/images/my_app.png`). No need to change `pubspec.yaml` if the `assets/images/` folder is already declared.
+3. **Images**  
+   Add files under `assets/images/` and set `imagePath` in `portfolio_data.dart`. Featured projects use it for the card screenshot; archive projects use it for the small app icon. No need to change `pubspec.yaml`; `assets/images/` is already declared.
 
 ## Project structure
 
@@ -66,7 +82,7 @@ lib/
 - **Build:** `flutter build web`
 - **Output:** `build/web/` (static assets + `index.html`, `main.dart.js`, etc.)
 - **Vercel:** Point the project root to the repo and set build command to `flutter build web` and output directory to `build/web`. Existing `vercel.json` and `.well-known/` are preserved at repo root for app links.
-- **Analytics:** Optional. Add your analytics snippet or SDK in `web/index.html` or via a Flutter package; keep a clear TODO in code where you intend to add it.
+- **Analytics:** Firebase Analytics is set up; see **Firebase Analytics** above.
 
 ## License
 

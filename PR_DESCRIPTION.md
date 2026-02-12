@@ -4,24 +4,22 @@
 
 ### What changed
 
-- **Scaffolded Flutter Web** in the repo (replacing the previous static HTML landing).
-- **Single-page portfolio** with sections: Top Nav, Hero, About, Experience, Featured Projects, Archive Projects, Skills, Contact, Footer.
-- **Design system:** Light + dark theme (persisted via `shared_preferences`), typography scale, spacing scale, reusable widgets (`SectionHeader`, `PrimaryButton`, `ProjectCard`, `ExperienceCard`, `TagChip`). Material 3, neutral palette with blue accent.
-- **Responsive layout:** Breakpoints for mobile / tablet / desktop; drawer nav on small screens, nav bar on wide.
-- **Content:** Filled from CV (Link Development, Hood’s, MOC ePalace, Hood’s Seller/Shopper, education, skills, contact). Store links for featured apps; archive list for older apps with a short disclaimer.
-- **SEO:** Updated `web/index.html` (title, description, OG tags). Added `web/sitemap.xml` and `web/robots.txt` (update domain before production).
-- **README:** How to run, how to replace placeholders, how to add a project, deploy notes.
+- **Flutter Web** single-page portfolio: Top Nav, Hero, About, Experience, Featured Projects, Archive, Skills, Contact, Footer.
+- **Design system:** Light/dark theme (persisted), Material 3, spacing/typography scale, reusable widgets.
+- **Responsive:** Drawer on mobile, nav bar on desktop; smooth scroll to sections.
+- **Content:** CV-based (Link Development, Hood’s, MOC ePalace, Hood’s Seller/Shopper). Featured projects have descriptions, screenshots, store links. Archive projects have app icons (`imagePath`), optional store links (Android/iOS icons), dimmed when no links.
+- **Profile:** GitHub, LinkedIn, CV download URL set; GitHub hidden in hero via `showGithubInHero`.
+- **SEO:** Title, description, OG tags and OG image (`web/og_image.jpg`), `sitemap.xml`, `robots.txt` (Sitemap enabled for abdallahgaber.dev).
+- **Firebase Analytics:** Integrated (script in `web/index.html`, init in `lib/main.dart`). Run `dart run flutterfire_cli:flutterfire configure` to enable.
+- **README:** Run, config, add project, Firebase, deploy.
 
-### What’s left as TODO
+### What’s left (optional)
 
-- **Replace placeholders** (see README):
-  - `TODO_GITHUB_URL`, `TODO_LINKEDIN_URL`, `TODO_CV_PDF_URL` in `lib/core/constants/app_constants.dart`
-  - Project descriptions and screenshot paths in `lib/core/data/portfolio_data.dart`
-  - Sitemap/robots domain in `web/sitemap.xml` and `web/robots.txt`
-- **Optional:** Contact form (static or mailto); analytics (add snippet or package and document in README).
+- Run **FlutterFire configure** to enable Firebase Analytics (see README).
+- **Deploy:** `flutter build web` → deploy `build/web/` (e.g. Vercel: build command `flutter build web`, output `build/web`).
 
 ### How to deploy
 
-1. Run `flutter build web` (output: `build/web/`).
-2. Deploy `build/web/` to your host (e.g. Vercel: set build command to `flutter build web`, output directory to `build/web`; ensure Flutter is available in the build environment or use a CI step that runs Flutter and then deploys the folder).
-3. Replace placeholders and, if needed, update sitemap/robots with your production domain.
+1. `flutter build web` (output: `build/web/`).
+2. Deploy `build/web/` to your host. Ensure Flutter is available in the build environment (or build locally and deploy the folder).
+3. If using a different domain, update `web/sitemap.xml` and `web/robots.txt`.

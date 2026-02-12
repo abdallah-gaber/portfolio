@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:portfolio/core/theme/app_theme.dart';
 import 'package:portfolio/features/home/home_page.dart';
+import 'package:portfolio/firebase_options.dart';
 
 const String _prefThemeKey = 'theme_mode'; // 'light' | 'dark'
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase when config has been set (after running flutterfire configure)
+  if (!DefaultFirebaseOptions.currentPlatform.apiKey.startsWith('YOUR_')) {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseAnalytics.instance.logAppOpen();
+  }
+
   runApp(const PortfolioApp());
 }
 

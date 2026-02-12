@@ -13,7 +13,8 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isNarrow = MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
+    final isNarrow =
+        MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
     final crossAxisCount = _crossAxisCount(MediaQuery.sizeOf(context).width);
 
     return Padding(
@@ -34,7 +35,7 @@ class ProjectsSection extends StatelessWidget {
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: AppTheme.spaceMd,
                 crossAxisSpacing: AppTheme.spaceMd,
-                childAspectRatio: 0.85,
+                childAspectRatio: 0.75,
                 children: PortfolioData.featuredProjects
                     .map((p) => ProjectCard(project: p))
                     .toList(),
@@ -60,7 +61,7 @@ class ProjectsSection extends StatelessWidget {
             spacing: AppTheme.spaceMd,
             runSpacing: AppTheme.spaceMd,
             children: PortfolioData.archiveProjects
-                .map((p) => _ArchiveChip(project: p))
+                .map((p) => _ArchiveProjectCard(project: p))
                 .toList(),
           ),
         ],
@@ -75,42 +76,107 @@ class ProjectsSection extends StatelessWidget {
   }
 }
 
-class _ArchiveChip extends StatelessWidget {
-  const _ArchiveChip({required this.project});
+bool _isValidUrl(String? url) {
+  if (url == null || url.isEmpty) return false;
+  if (url.startsWith('TODO')) return false;
+  return true;
+}
+
+class _ArchiveProjectCard extends StatelessWidget {
+  const _ArchiveProjectCard({required this.project});
 
   final ProjectItem project;
+
+  static const double _iconSize = 40;
+
+  Widget _buildAppIcon(ThemeData theme, bool hasAnyLink) {
+    final color = hasAnyLink
+        ? theme.colorScheme.primary
+        : theme.colorScheme.onSurfaceVariant;
+    if (project.imagePath != null && project.imagePath!.isNotEmpty) {
+      return SizedBox(
+        width: _iconSize,
+        height: _iconSize,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            project.imagePath!,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.apps,
+              size: 28,
+              color: color,
+            ),
+          ),
+        ),
+      );
+    }
+    return Icon(Icons.apps, size: 28, color: color);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final hasLinks = (project.androidUrl != null && project.androidUrl!.isNotEmpty &&
-            !project.androidUrl!.startsWith('TODO')) ||
-        (project.iosUrl != null && project.iosUrl!.isNotEmpty && !project.iosUrl!.startsWith('TODO'));
+    final hasAndroid = _isValidUrl(project.androidUrl);
+    final hasIos = _isValidUrl(project.iosUrl);
+    final hasAnyLink = hasAndroid || hasIos;
 
-    return Padding(
-      padding: EdgeInsets.only(right: AppTheme.spaceSm, bottom: AppTheme.spaceSm),
-      child: ActionChip(
-        label: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(project.name),
-            if (hasLinks) ...[
-              SizedBox(width: AppTheme.spaceXs),
-              Text(
-                ' · ${project.role}',
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+    return Opacity(
+      opacity: hasAnyLink ? 1.0 : 0.5,
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceMd,
+            vertical: AppTheme.spaceSm,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildAppIcon(theme, hasAnyLink),
+              SizedBox(width: AppTheme.spaceSm),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    project.name,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    project.role,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
+              if (hasAndroid || hasIos) ...[
+                SizedBox(width: AppTheme.spaceSm),
+                if (hasAndroid)
+                  IconButton(
+                    icon: const Icon(Icons.android),
+                    onPressed: () => launchExternalUrl(project.androidUrl!),
+                    tooltip: 'Open on Play Store',
+                    style: IconButton.styleFrom(
+                      foregroundColor: theme.colorScheme.primary,
+                    ),
+                  ),
+                if (hasIos)
+                  IconButton(
+                    icon: const Icon(Icons.apple),
+                    onPressed: () => launchExternalUrl(project.iosUrl!),
+                    tooltip: 'Open on App Store',
+                    style: IconButton.styleFrom(
+                      foregroundColor: theme.colorScheme.primary,
+                    ),
+                  ),
+              ],
             ],
-          ],
+          ),
         ),
-        onPressed: hasLinks
-            ? () {
-                final url = project.androidUrl ?? project.iosUrl;
-                if (url != null) launchExternalUrl(url);
-              }
-            : null,
       ),
     );
   }

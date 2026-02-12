@@ -2,5 +2,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap (update with your production URL)
-# Sitemap: https://abdallahgaber.dev/sitemap.xml
+# Sitemap (crawlers use this to discover your pages)
+Sitemap: https://abdallahgaber.dev/sitemap.xml

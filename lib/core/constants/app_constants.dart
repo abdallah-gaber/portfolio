@@ -3,10 +3,14 @@
 class AppConstants {
   AppConstants._();
 
-  // --- Placeholders (replace before production) ---
-  static const String githubUrl = 'TODO_GITHUB_URL';
-  static const String linkedInUrl = 'TODO_LINKEDIN_URL';
-  static const String cvDownloadUrl = 'TODO_CV_PDF_URL';
+  // --- Profile & CV ---
+  static const String githubUrl = 'https://github.com/abdallah-gaber';
+  /// Set to false to hide GitHub from hero (e.g. if you're not active there).
+  static const bool showGithubInHero = false;
+  static const String linkedInUrl = 'https://www.linkedin.com/in/abdallah--gaber/';
+  /// Direct-download link for CV (Google Drive export).
+  static const String cvDownloadUrl =
+      'https://drive.google.com/uc?export=download&id=1njzUBiAYT-C9OSzOuTGIkOHxHGhwuqKK';
 
   // --- Contact ---
   static const String email = 'abdallah.gaber.ragab@gmail.com';

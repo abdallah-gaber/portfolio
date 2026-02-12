@@ -51,7 +51,7 @@ class PortfolioData {
         ProjectItem(
           name: 'MOC ePalace',
           role: 'Technical Lead',
-          description: 'Official app for MOC ePalace services.', // TODO_PROJECT_DESC
+          description: 'A digital cultural platform connecting artists and audiences through exhibitions, events, and rich creative content.',
           techHighlights: [
             'Full lifecycle',
             'Release to stores',
@@ -60,27 +60,13 @@ class PortfolioData {
           ],
           androidUrl: 'https://play.google.com/store/apps/details?id=com.moc.epalace&hl=en',
           iosUrl: 'https://apps.apple.com/eg/app/id6756418392?l=ar',
-          imagePath: null, // TODO_SCREENSHOT: e.g. 'assets/images/placeholder_moc_epalace.png'
-          isFeatured: true,
-        ),
-        ProjectItem(
-          name: "Hood's Seller",
-          role: 'Senior Flutter Developer',
-          description: 'Seller app for Hood\'s live shopping platform.', // TODO_PROJECT_DESC
-          techHighlights: [
-            'Full lifecycle',
-            'Release to stores',
-            'Agile delivery',
-          ],
-          androidUrl: 'https://play.google.com/store/apps/details?id=live.hoods.seller',
-          iosUrl: 'https://apps.apple.com/eg/app/sell-on-hoods/id1614340111',
-          imagePath: null,
+          imagePath: "assets/images/placeholder_moc_epalace.png",
           isFeatured: true,
         ),
         ProjectItem(
           name: "Hood's Shopper",
           role: 'Senior Flutter Developer',
-          description: 'Shopper app for Hood\'s live shopping.', // TODO_PROJECT_DESC
+          description: 'A live-stream shopping platform where users discover, interact, and buy products in real time.',
           techHighlights: [
             'Full lifecycle',
             'Release to stores',
@@ -88,68 +74,48 @@ class PortfolioData {
           ],
           androidUrl: 'https://play.google.com/store/apps/details?id=live.hoods',
           iosUrl: 'https://apps.apple.com/eg/app/hoods-live-shopping/id1614081311',
-          imagePath: null,
+          imagePath: 'assets/images/placeholder_hoods_shopper.jpeg',
           isFeatured: true,
         ),
+        ProjectItem(
+          name: "Hood's Seller",
+          role: 'Senior Flutter Developer',
+          description: 'A seller platform for hosting live streams, showcasing products, and managing real-time sales.',
+          techHighlights: [
+            'Full lifecycle',
+            'Release to stores',
+            'Agile delivery',
+          ],
+          androidUrl: 'https://play.google.com/store/apps/details?id=live.hoods.seller',
+          iosUrl: 'https://apps.apple.com/eg/app/sell-on-hoods/id1614340111',
+          imagePath: 'assets/images/placeholder_hoods_seller.jpeg',
+          isFeatured: true,
+        ), 
       ];
 
   static List<ProjectItem> get archiveProjects => [
         const ProjectItem(
-          name: 'Hadded',
-          role: 'Flutter',
-          androidUrl: 'https://play.google.com/store/apps/details?id=...',
-          iosUrl: 'https://apps.apple.com/...',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Hadded Owner',
-          role: 'Flutter',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Tamkeen',
-          role: 'Flutter',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Morstan',
-          role: 'Flutter',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Morstan Doctors',
-          role: 'Flutter',
-          isFeatured: false,
-        ),
-        const ProjectItem(
           name: 'Radwa',
-          role: 'Android',
+          role: 'Developer (Flutter)',
+          androidUrl: 'https://play.google.com/store/apps/details?id=sa.net.is.radwa&hl=en',
+          iosUrl: 'https://apps.apple.com/eg/app/radwa-express-%D8%B1%D8%B6%D9%88%D9%89-%D8%A5%D9%83%D8%B3%D8%A8%D8%B1%D9%8A%D8%B3/id1536911687',
           isFeatured: false,
+          imagePath: 'assets/images/radwa-app.webp',
         ),
         const ProjectItem(
           name: 'Awal Qatfa',
-          role: 'Android',
+          role: 'Developer (Flutter)',
+          iosUrl: 'https://apps.apple.com/eg/app/awal-qatfa-%D8%A7%D9%88%D9%84-%D9%82%D8%B7%D9%81%D8%A9/id1509689405',
           isFeatured: false,
+        imagePath: 'assets/images/AwalQatfa-app.webp',
         ),
         const ProjectItem(
           name: 'Jawhara',
-          role: 'Android',
+          role: 'Developer (Flutter)',
+          androidUrl: 'https://play.google.com/store/apps/details?id=online.jawhara',
+          iosUrl: 'https://apps.apple.com/eg/app/%D8%AC%D9%88%D9%87%D8%B1%D9%87-%D8%AA%D8%B3%D9%88%D9%82-%D8%A3%D9%88%D9%86%D9%84%D8%A7%D9%8A%D9%86/id1565162947',
           isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Andalosian',
-          role: 'Android',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'AT%',
-          role: 'Android',
-          isFeatured: false,
-        ),
-        const ProjectItem(
-          name: 'Top Stores',
-          role: 'Android',
-          isFeatured: false,
+          imagePath: 'assets/images/jawhara-app.webp',
         ),
       ];
 

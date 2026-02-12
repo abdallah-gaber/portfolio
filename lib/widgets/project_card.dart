@@ -92,7 +92,7 @@ class ProjectCard extends StatelessWidget {
       child: project.imagePath != null
           ? Image.asset(
               project.imagePath!,
-              fit: BoxFit.cover,
+              fit: BoxFit.fitHeight,
               errorBuilder: (_, __, ___) => _placeholder(theme),
             )
           : _placeholder(theme),

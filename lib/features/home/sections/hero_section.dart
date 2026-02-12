@@ -66,18 +66,20 @@ class HeroSection extends StatelessWidget {
             SizedBox(height: AppTheme.spaceXl),
             Row(
               children: [
-                _SocialIcon(
-                  icon: Icons.code,
-                  label: 'GitHub',
-                  onTap: onGithub,
-                  isPlaceholder: AppConstants.githubUrl.startsWith('TODO_'),
-                ),
-                SizedBox(width: AppTheme.spaceMd),
+                if (AppConstants.showGithubInHero) ...[
+                  _SocialIcon(
+                    icon: Icons.code,
+                    label: 'GitHub',
+                    onTap: onGithub,
+                    isPlaceholder: false,
+                  ),
+                  SizedBox(width: AppTheme.spaceMd),
+                ],
                 _SocialIcon(
                   icon: Icons.business_center,
                   label: 'LinkedIn',
                   onTap: onLinkedIn,
-                  isPlaceholder: AppConstants.linkedInUrl.startsWith('TODO_'),
+                  isPlaceholder: false,
                 ),
                 SizedBox(width: AppTheme.spaceMd),
                 _SocialIcon(
