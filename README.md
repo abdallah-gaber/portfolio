@@ -2,7 +2,7 @@
 
 Personal portfolio site for [abdallahgaber.dev](https://abdallahgaber.dev). Built with **Flutter Web** and refreshed with the 2026 bento redesign: aurora background, glass navigation, animated hero, bento About layout, timeline Experience, and upgraded project/skills/contact sections.
 
-See the redesign summary in [docs/redesign-2026.md](/Users/abdallahgaber/Library/CloudStorage/OneDrive-LinkDevelopment/private/portfolio/docs/redesign-2026.md).
+See the redesign summary in [docs/redesign-2026.md](docs/redesign-2026.md).
 
 ## Highlights
 
@@ -19,19 +19,15 @@ Featured project media currently available in the repo:
 
 ### MOC ePalace
 
-![MOC ePalace screenshot](/Users/abdallahgaber/Library/CloudStorage/OneDrive-LinkDevelopment/private/portfolio/assets/images/placeholder_moc_epalace.png)
+![MOC ePalace screenshot](assets/images/placeholder_moc_epalace.png)
 
 ### Hood's Shopper
 
-![Hood's Shopper screenshot](/Users/abdallahgaber/Library/CloudStorage/OneDrive-LinkDevelopment/private/portfolio/assets/images/placeholder_hoods_shopper.jpeg)
+![Hood's Shopper screenshot](assets/images/placeholder_hoods_shopper.jpeg)
 
 ### Hood's Seller
 
-![Hood's Seller screenshot](/Users/abdallahgaber/Library/CloudStorage/OneDrive-LinkDevelopment/private/portfolio/assets/images/placeholder_hoods_seller.jpeg)
-
-## GIF Preview
-
-A live portfolio walkthrough GIF has not been added yet. I could not generate a real browser capture in this environment because video/browser capture tooling was unavailable, so this README only includes the static screenshots that already exist in the repository.
+![Hood's Seller screenshot](assets/images/placeholder_hoods_seller.jpeg)
 
 ## How to run
 

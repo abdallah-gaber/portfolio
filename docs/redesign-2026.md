@@ -1,6 +1,6 @@
 # Portfolio Redesign 2026
 
-This document summarizes the `feat/portfolio-bento-2026` redesign work for the Flutter Web portfolio.
+This document summarizes the 2026 visual refresh for the Flutter Web portfolio.
 
 ## What changed
 
@@ -22,7 +22,7 @@ This document summarizes the `feat/portfolio-bento-2026` redesign work for the F
 - `flutter_animate`
 - `visibility_detector`
 
-## Dependency note
+## Tooling note
 
 `google_fonts ^6.x` conflicts with the previously pinned `flutterfire_cli ^0.2.6` in this repo's dependency graph. To keep `flutter pub get` resolvable, the dev dependency was adjusted to `flutterfire_cli ^0.1.1+2`.
 
@@ -32,9 +32,3 @@ This document summarizes the `feat/portfolio-bento-2026` redesign work for the F
 - `flutter test`
 
 Both passed after the redesign changes.
-
-## Visual assets
-
-The repository currently contains project imagery under `assets/images/`, and the README now uses those images for richer documentation.
-
-A true portfolio walkthrough GIF was not generated in this environment because browser/video capture tooling was not available during the update pass.
