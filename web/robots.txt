@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap (crawlers use this to discover your pages)
+Sitemap: https://abdallahgaber.dev/sitemap.xml
