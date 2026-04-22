@@ -1,110 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/launch_url.dart';
-import '../../../widgets/section_header.dart';
+import '../../../shared/widgets/glass_card.dart';
+import '../../../shared/widgets/scroll_reveal.dart';
+import '../../../shared/widgets/section_label.dart';
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isNarrow = MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
-
+    final isNarrow =
+        MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: AppTheme.spaceSection,
-        horizontal: isNarrow ? AppTheme.spaceMd : AppTheme.spaceXxl,
+        vertical: 80,
+        horizontal: isNarrow ? 20 : 64,
       ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SectionHeader(title: 'Contact'),
-            SizedBox(height: AppTheme.spaceLg),
-            _ContactRow(
-              icon: Icons.email,
-              label: 'Email',
-              value: AppConstants.email,
-              onTap: () => launchExternalUrl('mailto:${AppConstants.email}'),
-            ),
-            SizedBox(height: AppTheme.spaceMd),
-            _ContactRow(
-              icon: Icons.location_on,
-              label: 'Location',
-              value: AppConstants.location,
-              onTap: null,
-            ),
-            SizedBox(height: AppTheme.spaceXl),
-            OutlinedButton.icon(
-              onPressed: () => launchExternalUrl('mailto:${AppConstants.email}'),
-              icon: const Icon(Icons.email, size: 20),
-              label: const Text('Send email'),
-              style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppTheme.spaceLg,
-                  vertical: AppTheme.spaceMd,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ContactRow extends StatelessWidget {
-  const _ContactRow({
-    required this.icon,
-    required this.label,
-    required this.value,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 22, color: theme.colorScheme.primary),
-        SizedBox(width: AppTheme.spaceMd),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              SizedBox(height: AppTheme.spaceXs),
-              if (onTap != null)
-                InkWell(
-                  onTap: onTap,
-                  borderRadius: BorderRadius.circular(4),
-                  child: Text(
-                    value,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                      decoration: TextDecoration.underline,
-                    ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ScrollReveal(child: const SectionLabel(label: "Let's connect")),
+          const SizedBox(height: 32),
+          ScrollReveal(
+            delay: const Duration(milliseconds: 100),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: GlassCard(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.violet.withValues(alpha: 0.12),
+                      AppColors.teal.withValues(alpha: 0.06),
+                    ],
                   ),
-                )
-              else
-                Text(value, style: theme.textTheme.bodyLarge),
-            ],
+                  borderColor: AppColors.violet.withValues(alpha: 0.3),
+                  padding: const EdgeInsets.all(40),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Have a project in mind?',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.spaceGrotesk(
+                          color: AppColors.textPrimary,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        "I'm available for freelance, consulting, or full-time opportunities.",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          color: AppColors.textSub,
+                          fontSize: 15,
+                          height: 1.6,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      ElevatedButton.icon(
+                        onPressed: () =>
+                            launchExternalUrl('mailto:${AppConstants.email}'),
+                        icon: const Icon(Icons.email_outlined),
+                        label: Text(AppConstants.email),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.violet,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 28,
+                            vertical: 16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 14,
+                            color: AppColors.textMuted,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            AppConstants.location,
+                            style: GoogleFonts.inter(
+                              color: AppColors.textMuted,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

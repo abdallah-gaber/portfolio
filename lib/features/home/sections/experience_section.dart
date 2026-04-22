@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../../core/data/portfolio_data.dart';
-import '../../../widgets/section_header.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/scroll_reveal.dart';
+import '../../../shared/widgets/section_label.dart';
 import '../../../widgets/experience_card.dart';
 
 class ExperienceSection extends StatefulWidget {
@@ -13,49 +14,47 @@ class ExperienceSection extends StatefulWidget {
 }
 
 class _ExperienceSectionState extends State<ExperienceSection> {
-  static const int _expandedCount = 2;
-  bool _accordionExpanded = false;
+  static const _expandedCount = 2;
+  bool _showAll = false;
 
   @override
   Widget build(BuildContext context) {
-    final isNarrow = MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
+    final isNarrow =
+        MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
     final list = PortfolioData.experience;
-    final expandedItems = list.take(_expandedCount).toList();
-    final collapsedItems = list.skip(_expandedCount).toList();
+    final visible = _showAll ? list : list.take(_expandedCount).toList();
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: AppTheme.spaceSection,
-        horizontal: isNarrow ? AppTheme.spaceMd : AppTheme.spaceXxl,
+        vertical: 80,
+        horizontal: isNarrow ? 20 : 64,
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 800),
+        constraints: const BoxConstraints(maxWidth: 760),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(title: 'Experience'),
-            SizedBox(height: AppTheme.spaceLg),
-            ...expandedItems.map(
-              (e) => ExperienceCard(item: e, expanded: true),
-            ),
-            if (collapsedItems.isNotEmpty) ...[
-              ExpansionTile(
-                initiallyExpanded: _accordionExpanded,
-                onExpansionChanged: (v) => setState(() => _accordionExpanded = v),
-                title: Text(
-                  'Earlier roles',
-                  style: Theme.of(context).textTheme.titleMedium,
+            ScrollReveal(child: const SectionLabel(label: 'Experience')),
+            const SizedBox(height: 32),
+            ...List.generate(
+              visible.length,
+              (i) => ScrollReveal(
+                delay: Duration(milliseconds: 100 * i),
+                child: ExperienceCard(
+                  item: visible[i],
+                  isLast:
+                      i == visible.length - 1 &&
+                      (_showAll || list.length <= _expandedCount),
                 ),
-                children: collapsedItems
-                    .map(
-                      (e) => ExperienceCard(
-                        item: e,
-                        expanded: true,
-                      ),
-                    )
-                    .toList(),
               ),
-            ],
+            ),
+            if (list.length > _expandedCount)
+              TextButton.icon(
+                onPressed: () => setState(() => _showAll = !_showAll),
+                icon: Icon(_showAll ? Icons.expand_less : Icons.expand_more),
+                label: Text(_showAll ? 'Show less' : 'Show earlier roles'),
+                style: TextButton.styleFrom(foregroundColor: AppColors.violet),
+              ),
           ],
         ),
       ),

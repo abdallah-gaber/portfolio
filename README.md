@@ -1,6 +1,33 @@
 # Abdallah Gaber – Portfolio (Flutter Web)
 
-Personal portfolio site for [abdallahgaber.dev](https://abdallahgaber.dev). Built with **Flutter Web**: responsive, light/dark theme, single-page layout with smooth scroll.
+Personal portfolio site for [abdallahgaber.dev](https://abdallahgaber.dev). Built with **Flutter Web** and refreshed with the 2026 bento redesign: aurora background, glass navigation, animated hero, bento About layout, timeline Experience, and upgraded project/skills/contact sections.
+
+See the redesign summary in [docs/redesign-2026.md](docs/redesign-2026.md).
+
+## Highlights
+
+- Dark-first aurora visual system with custom typography
+- Floating frosted-glass navigation
+- Animated hero with rotating role headline
+- Bento About section and timeline Experience section
+- Hover-enhanced project cards and grouped glass skill cards
+- Scroll-reveal animations across the page
+
+## Project Screenshots
+
+Featured project media currently available in the repo:
+
+### MOC ePalace
+
+![MOC ePalace screenshot](assets/images/placeholder_moc_epalace.png)
+
+### Hood's Shopper
+
+![Hood's Shopper screenshot](assets/images/placeholder_hoods_shopper.jpeg)
+
+### Hood's Seller
+
+![Hood's Seller screenshot](assets/images/placeholder_hoods_seller.jpeg)
 
 ## How to run
 
@@ -74,8 +101,11 @@ Analytics is wired with **Firebase** (script in `web/index.html`, init in `lib/m
 ```
 lib/
   core/           # Theme, constants, models, data, utils
-  features/home/  # Home page and sections (nav, hero, about, experience, projects, skills, contact, footer)
-  widgets/        # Shared UI (SectionHeader, PrimaryButton, ProjectCard, ExperienceCard, TagChip)
+  features/home/  # Home page, sections, and home-specific widgets (aurora, glass nav)
+  shared/widgets/ # Shared glass and animation primitives
+  widgets/        # Reusable UI such as project and experience cards
+docs/
+  redesign-2026.md
 ```
 
 ## Deploy

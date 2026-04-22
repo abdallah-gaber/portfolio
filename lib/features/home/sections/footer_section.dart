@@ -3,16 +3,12 @@ import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
 class FooterSection extends StatelessWidget {
-  const FooterSection({
-    super.key,
-    required this.onNavTap,
-  });
+  const FooterSection({super.key, required this.onNavTap});
 
   final void Function(String sectionId) onNavTap;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final year = DateTime.now().year;
 
     return Container(
@@ -20,8 +16,9 @@ class FooterSection extends StatelessWidget {
         vertical: AppTheme.spaceXl,
         horizontal: AppTheme.spaceMd,
       ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        border: Border(top: BorderSide(color: AppColors.glassBorder, width: 1)),
       ),
       child: Column(
         children: [
@@ -31,7 +28,10 @@ class FooterSection extends StatelessWidget {
             runSpacing: AppTheme.spaceSm,
             children: [
               _FooterLink(label: 'About', onTap: () => onNavTap('about')),
-              _FooterLink(label: 'Experience', onTap: () => onNavTap('experience')),
+              _FooterLink(
+                label: 'Experience',
+                onTap: () => onNavTap('experience'),
+              ),
               _FooterLink(label: 'Projects', onTap: () => onNavTap('projects')),
               _FooterLink(label: 'Skills', onTap: () => onNavTap('skills')),
               _FooterLink(label: 'Contact', onTap: () => onNavTap('contact')),
@@ -40,9 +40,7 @@ class FooterSection extends StatelessWidget {
           SizedBox(height: AppTheme.spaceMd),
           Text(
             '© $year ${AppConstants.siteName}. Built with Flutter Web.',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
           ),
         ],
       ),
@@ -58,14 +56,11 @@ class _FooterLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return TextButton(
       onPressed: onTap,
       child: Text(
         label,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
       ),
     );
   }

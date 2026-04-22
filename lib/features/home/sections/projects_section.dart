@@ -4,6 +4,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/data/portfolio_data.dart';
 import '../../../core/models/project_item.dart';
 import '../../../core/utils/launch_url.dart';
+import '../../../shared/widgets/scroll_reveal.dart';
 import '../../../widgets/section_header.dart';
 import '../../../widgets/project_card.dart';
 
@@ -36,9 +37,15 @@ class ProjectsSection extends StatelessWidget {
                 mainAxisSpacing: AppTheme.spaceMd,
                 crossAxisSpacing: AppTheme.spaceMd,
                 childAspectRatio: 0.75,
-                children: PortfolioData.featuredProjects
-                    .map((p) => ProjectCard(project: p))
-                    .toList(),
+                children: List.generate(
+                  PortfolioData.featuredProjects.length,
+                  (i) => ScrollReveal(
+                    delay: Duration(milliseconds: 120 * i),
+                    child: ProjectCard(
+                      project: PortfolioData.featuredProjects[i],
+                    ),
+                  ),
+                ),
               );
             },
           ),
@@ -102,11 +109,8 @@ class _ArchiveProjectCard extends StatelessWidget {
           child: Image.asset(
             project.imagePath!,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Icon(
-              Icons.apps,
-              size: 28,
-              color: color,
-            ),
+            errorBuilder: (_, __, ___) =>
+                Icon(Icons.apps, size: 28, color: color),
           ),
         ),
       );
