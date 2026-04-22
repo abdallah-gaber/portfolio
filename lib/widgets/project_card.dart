@@ -1,145 +1,232 @@
 import 'package:flutter/material.dart';
-import '../core/theme/app_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../core/models/project_item.dart';
+import '../core/theme/app_theme.dart';
 import '../core/utils/launch_url.dart';
 
-class ProjectCard extends StatelessWidget {
-  const ProjectCard({
-    super.key,
-    required this.project,
-  });
+class ProjectCard extends StatefulWidget {
+  const ProjectCard({super.key, required this.project});
 
   final ProjectItem project;
 
   @override
+  State<ProjectCard> createState() => _ProjectCardState();
+}
+
+class _ProjectCardState extends State<ProjectCard> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildImage(context),
-          Padding(
-            padding: EdgeInsets.all(AppTheme.spaceMd),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  project.name,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+    final p = widget.project;
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.02 : 1.0,
+        duration: const Duration(milliseconds: 200),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceHigh,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: _hovered
+                  ? AppColors.violet.withValues(alpha: 0.5)
+                  : AppColors.glassBorder,
+              width: _hovered ? 1.5 : 1,
+            ),
+            boxShadow: _hovered
+                ? [
+                    BoxShadow(
+                      color: AppColors.violet.withValues(alpha: 0.15),
+                      blurRadius: 30,
+                      spreadRadius: -5,
+                    ),
+                  ]
+                : [],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
                 ),
-                SizedBox(height: AppTheme.spaceXs),
-                Text(
-                  project.role,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.primary,
-                  ),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: p.imagePath != null
+                      ? Image.asset(
+                          p.imagePath!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _placeholder(),
+                        )
+                      : _placeholder(),
                 ),
-                if (project.description != null) ...[
-                  SizedBox(height: AppTheme.spaceSm),
-                  Text(
-                    project.description!,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                ],
-                if (project.techHighlights.isNotEmpty) ...[
-                  SizedBox(height: AppTheme.spaceSm),
-                  Wrap(
-                    spacing: AppTheme.spaceXs,
-                    runSpacing: AppTheme.spaceXs,
-                    children: project.techHighlights
-                        .map((t) => Chip(
-                              label: Text(t, style: theme.textTheme.labelSmall),
-                              padding: EdgeInsets.zero,
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ))
-                        .toList(),
-                  ),
-                ],
-                SizedBox(height: AppTheme.spaceMd),
-                Row(
-                  children: [
-                    if (project.androidUrl != null && !project.androidUrl!.startsWith('TODO'))
-                      Padding(
-                        padding: EdgeInsets.only(right: AppTheme.spaceSm),
-                        child: _LinkChip(
-                          label: 'Play Store',
-                          url: project.androidUrl!,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.violet.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          p.role,
+                          style: GoogleFonts.inter(
+                            color: AppColors.violet,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    if (project.iosUrl != null && !project.iosUrl!.startsWith('TODO'))
-                      _LinkChip(
-                        label: 'App Store',
-                        url: project.iosUrl!,
+                      const SizedBox(height: 8),
+                      Text(
+                        p.name,
+                        style: GoogleFonts.spaceGrotesk(
+                          color: AppColors.textPrimary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                  ],
+                      if (p.description != null) ...[
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: Text(
+                            p.description!,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.inter(
+                              color: AppColors.textSub,
+                              fontSize: 13,
+                              height: 1.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 12),
+                      if (p.techHighlights.isNotEmpty)
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: p.techHighlights
+                              .map((t) => _TinyChip(t))
+                              .toList(),
+                        ),
+                      const SizedBox(height: 14),
+                      Row(
+                        children: [
+                          if (p.androidUrl != null &&
+                              !p.androidUrl!.startsWith('TODO'))
+                            _StoreBtn(
+                              icon: Icons.android,
+                              label: 'Play Store',
+                              onTap: () => launchExternalUrl(p.androidUrl!),
+                              accent: AppColors.teal,
+                            ),
+                          const SizedBox(width: 8),
+                          if (p.iosUrl != null && !p.iosUrl!.startsWith('TODO'))
+                            _StoreBtn(
+                              icon: Icons.apple,
+                              label: 'App Store',
+                              onTap: () => launchExternalUrl(p.iosUrl!),
+                              accent: AppColors.textSub,
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImage(BuildContext context) {
-    final theme = Theme.of(context);
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: project.imagePath != null
-          ? Image.asset(
-              project.imagePath!,
-              fit: BoxFit.fitHeight,
-              errorBuilder: (_, __, ___) => _placeholder(theme),
-            )
-          : _placeholder(theme),
-    );
-  }
-
-  Widget _placeholder(ThemeData theme) {
-    return Container(
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.phone_android,
-              size: 48,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-            ),
-            SizedBox(height: AppTheme.spaceSm),
-            Text(
-              'TODO_SCREENSHOT',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Widget _placeholder() => Container(
+    color: AppColors.surface,
+    child: Center(
+      child: Icon(
+        Icons.phone_android,
+        size: 48,
+        color: AppColors.textMuted.withValues(alpha: 0.4),
+      ),
+    ),
+  );
 }
 
-class _LinkChip extends StatelessWidget {
-  const _LinkChip({required this.label, required this.url});
+class _TinyChip extends StatelessWidget {
+  const _TinyChip(this.label);
 
   final String label;
-  final String url;
 
   @override
-  Widget build(BuildContext context) {
-    return ActionChip(
-      label: Text(label),
-      onPressed: () => _openUrl(url),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(6),
+      border: Border.all(color: AppColors.glassBorder),
+    ),
+    child: Text(
+      label,
+      style: GoogleFonts.spaceGrotesk(
+        color: AppColors.textMuted,
+        fontSize: 10,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
+}
 
-  void _openUrl(String url) {
-    launchExternalUrl(url);
-  }
+class _StoreBtn extends StatelessWidget {
+  const _StoreBtn({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    required this.accent,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: accent.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: accent),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              color: accent,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

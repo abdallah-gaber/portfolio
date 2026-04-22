@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../core/theme/app_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../core/models/experience_item.dart';
+import '../core/theme/app_theme.dart';
 
 class ExperienceCard extends StatelessWidget {
   const ExperienceCard({
@@ -8,105 +9,173 @@ class ExperienceCard extends StatelessWidget {
     required this.item,
     this.expanded = true,
     this.onTap,
+    this.isLast = false,
   });
 
   final ExperienceItem item;
   final bool expanded;
   final VoidCallback? onTap;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      margin: EdgeInsets.only(bottom: AppTheme.spaceMd),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: EdgeInsets.all(AppTheme.spaceMd),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            width: 28,
+            child: Column(
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: AppColors.violet,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.violet.withValues(alpha: 0.5),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                ),
+                if (!isLast)
+                  Expanded(
+                    child: Center(
+                      child: Container(
+                        width: 1.5,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColors.violet.withValues(alpha: 0.4),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 24),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceHigh,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.glassBorder),
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.role,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: AppTheme.spaceXs),
-                        Text(
-                          item.company,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                        SizedBox(height: AppTheme.spaceXs),
-                        Text(
-                          item.period,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    item.role,
+                    style: GoogleFonts.spaceGrotesk(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (onTap != null)
-                    Icon(
-                      expanded ? Icons.expand_less : Icons.expand_more,
-                      color: theme.colorScheme.onSurfaceVariant,
+                  const SizedBox(height: 4),
+                  Text(
+                    item.company,
+                    style: GoogleFonts.inter(
+                      color: AppColors.violet,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item.period,
+                    style: GoogleFonts.inter(
+                      color: AppColors.textMuted,
+                      fontSize: 12,
+                    ),
+                  ),
+                  if (expanded && item.bullets.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    ...item.bullets.map(
+                      (b) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 6, right: 8),
+                              child: Icon(
+                                Icons.arrow_right,
+                                size: 16,
+                                color: AppColors.teal,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                b,
+                                style: GoogleFonts.inter(
+                                  color: AppColors.textSub,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (expanded &&
+                      item.tools != null &&
+                      item.tools!.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: item.tools!
+                          .split(RegExp(r'[,&]'))
+                          .map((t) => t.trim())
+                          .where((t) => t.isNotEmpty)
+                          .map((t) => _TechTag(t))
+                          .toList(),
+                    ),
+                  ],
                 ],
               ),
-              if (expanded && item.bullets.isNotEmpty) ...[
-                SizedBox(height: AppTheme.spaceMd),
-                ...item.bullets.map(
-                  (b) => Padding(
-                    padding: EdgeInsets.only(bottom: AppTheme.spaceXs),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 6, right: AppTheme.spaceSm),
-                          child: Icon(
-                            Icons.circle,
-                            size: 6,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                        Expanded(child: Text(b, style: theme.textTheme.bodyMedium)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-              if (expanded && item.tools != null && item.tools!.isNotEmpty) ...[
-                SizedBox(height: AppTheme.spaceSm),
-                Wrap(
-                  spacing: AppTheme.spaceXs,
-                  runSpacing: AppTheme.spaceXs,
-                  children: item.tools!
-                      .split(RegExp(r'[,&]'))
-                      .map((e) => e.trim())
-                      .where((e) => e.isNotEmpty)
-                      .map((t) => Chip(
-                            label: Text(t, style: theme.textTheme.labelSmall),
-                            padding: EdgeInsets.zero,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ))
-                      .toList(),
-                ),
-              ],
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
+}
+
+class _TechTag extends StatelessWidget {
+  const _TechTag(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(6),
+      border: Border.all(color: AppColors.glassBorder),
+    ),
+    child: Text(
+      label,
+      style: GoogleFonts.spaceGrotesk(
+        color: AppColors.textMuted,
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
 }
