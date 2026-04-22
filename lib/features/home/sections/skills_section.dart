@@ -120,7 +120,7 @@ class _SkillGroupCard extends StatelessWidget {
                 Text(
                   s,
                   style: GoogleFonts.inter(
-                    color: AppColors.textPrimary,
+                    color: AppColors.primaryText(context),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),

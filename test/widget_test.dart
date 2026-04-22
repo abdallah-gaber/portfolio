@@ -20,4 +20,17 @@ void main() {
     expect(find.text('Abdallah Gaber'), findsWidgets);
     expect(find.text('Projects'), findsWidgets);
   });
+
+  testWidgets('Theme toggle switches icon state', (WidgetTester tester) async {
+    VisibilityDetectorController.instance.updateInterval = Duration.zero;
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byTooltip('Switch to light mode'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Switch to light mode'));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byTooltip('Switch to dark mode'), findsOneWidget);
+  });
 }

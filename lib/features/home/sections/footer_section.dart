@@ -16,9 +16,11 @@ class FooterSection extends StatelessWidget {
         vertical: AppTheme.spaceXl,
         horizontal: AppTheme.spaceMd,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.glassBorder, width: 1)),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceColor(context),
+        border: Border(
+          top: BorderSide(color: AppColors.border(context), width: 1),
+        ),
       ),
       child: Column(
         children: [
@@ -40,7 +42,7 @@ class FooterSection extends StatelessWidget {
           SizedBox(height: AppTheme.spaceMd),
           Text(
             '© $year ${AppConstants.siteName}. Built with Flutter Web.',
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+            style: TextStyle(color: AppColors.mutedText(context), fontSize: 12),
           ),
         ],
       ),
@@ -60,7 +62,7 @@ class _FooterLink extends StatelessWidget {
       onPressed: onTap,
       child: Text(
         label,
-        style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+        style: TextStyle(color: AppColors.mutedText(context), fontSize: 12),
       ),
     );
   }

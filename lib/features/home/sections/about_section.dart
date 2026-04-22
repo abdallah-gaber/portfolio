@@ -125,7 +125,7 @@ class _BioCellLarge extends StatelessWidget {
             Text(
               'Abdallah Gaber',
               style: GoogleFonts.spaceGrotesk(
-                color: AppColors.textPrimary,
+                color: AppColors.primaryText(context),
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
@@ -138,7 +138,7 @@ class _BioCellLarge extends StatelessWidget {
           'and release. 13 years in software means I have shipped apps across Android, iOS, and '
           'Flutter for companies ranging from startups to government-scale digital platforms.',
           style: GoogleFonts.inter(
-            color: AppColors.textSub,
+            color: AppColors.secondaryText(context),
             fontSize: 15,
             height: 1.7,
           ),
@@ -188,7 +188,7 @@ class _AvailabilityCell extends StatelessWidget {
         Text(
           'Open to\nnew roles',
           style: GoogleFonts.spaceGrotesk(
-            color: AppColors.textPrimary,
+            color: AppColors.primaryText(context),
             fontSize: 16,
             fontWeight: FontWeight.w700,
             height: 1.3,
@@ -214,14 +214,17 @@ class _LocationCell extends StatelessWidget {
         Text(
           AppConstants.location,
           style: GoogleFonts.inter(
-            color: AppColors.textPrimary,
+            color: AppColors.primaryText(context),
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),
         Text(
           'Egypt',
-          style: GoogleFonts.inter(color: AppColors.textMuted, fontSize: 12),
+          style: GoogleFonts.inter(
+            color: AppColors.mutedText(context),
+            fontSize: 12,
+          ),
         ),
       ],
     ),
@@ -254,7 +257,7 @@ class _YearsCell extends StatelessWidget {
         Text(
           'Years\nexperience',
           style: GoogleFonts.inter(
-            color: AppColors.textSub,
+            color: AppColors.secondaryText(context),
             fontSize: 12,
             height: 1.4,
           ),
@@ -273,7 +276,7 @@ class _QuickFactsCell extends StatelessWidget {
         Text(
           'Quick facts',
           style: GoogleFonts.inter(
-            color: AppColors.textMuted,
+            color: AppColors.mutedText(context),
             fontSize: 11,
             letterSpacing: 1.0,
             fontWeight: FontWeight.w600,

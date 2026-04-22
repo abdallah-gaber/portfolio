@@ -19,6 +19,10 @@ class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {
     final p = widget.project;
+    final surface = AppColors.surfaceHighColor(context);
+    final border = AppColors.border(context);
+    final textPrimary = AppColors.primaryText(context);
+    final textSub = AppColors.secondaryText(context);
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -28,12 +32,12 @@ class _ProjectCardState extends State<ProjectCard> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: AppColors.surfaceHigh,
+            color: surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: _hovered
                   ? AppColors.violet.withValues(alpha: 0.5)
-                  : AppColors.glassBorder,
+                  : border,
               width: _hovered ? 1.5 : 1,
             ),
             boxShadow: _hovered
@@ -92,7 +96,7 @@ class _ProjectCardState extends State<ProjectCard> {
                       Text(
                         p.name,
                         style: GoogleFonts.spaceGrotesk(
-                          color: AppColors.textPrimary,
+                          color: textPrimary,
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                         ),
@@ -105,7 +109,7 @@ class _ProjectCardState extends State<ProjectCard> {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.inter(
-                              color: AppColors.textSub,
+                              color: textSub,
                               fontSize: 13,
                               height: 1.5,
                             ),
@@ -154,12 +158,12 @@ class _ProjectCardState extends State<ProjectCard> {
   }
 
   Widget _placeholder() => Container(
-    color: AppColors.surface,
+    color: AppColors.surfaceColor(context),
     child: Center(
       child: Icon(
         Icons.phone_android,
         size: 48,
-        color: AppColors.textMuted.withValues(alpha: 0.4),
+        color: AppColors.mutedText(context).withValues(alpha: 0.4),
       ),
     ),
   );
@@ -174,14 +178,14 @@ class _TinyChip extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
     decoration: BoxDecoration(
-      color: AppColors.surface,
+      color: AppColors.surfaceColor(context),
       borderRadius: BorderRadius.circular(6),
-      border: Border.all(color: AppColors.glassBorder),
+      border: Border.all(color: AppColors.border(context)),
     ),
     child: Text(
       label,
       style: GoogleFonts.spaceGrotesk(
-        color: AppColors.textMuted,
+        color: AppColors.mutedText(context),
         fontSize: 10,
         fontWeight: FontWeight.w600,
       ),

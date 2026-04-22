@@ -24,6 +24,7 @@ class HeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final isNarrow =
         MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
+    final textSub = AppColors.secondaryText(context);
     return Container(
       constraints: const BoxConstraints(minHeight: 560),
       padding: EdgeInsets.symmetric(
@@ -42,7 +43,7 @@ class HeroSection extends StatelessWidget {
             Text(
               '13 years in software · Flutter specialist · Cairo, Egypt',
               style: GoogleFonts.inter(
-                color: AppColors.textSub,
+                color: textSub,
                 fontSize: isNarrow ? 16 : 20,
                 height: 1.5,
               ),
@@ -170,13 +171,15 @@ class _KineticHeadlineState extends State<_KineticHeadline> {
   @override
   Widget build(BuildContext context) {
     final fs = widget.isNarrow ? 34.0 : 60.0;
+    final textPrimary = AppColors.primaryText(context);
+    final textSub = AppColors.secondaryText(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Abdallah Gaber',
           style: GoogleFonts.spaceGrotesk(
-            color: AppColors.textPrimary,
+            color: textPrimary,
             fontSize: fs,
             fontWeight: FontWeight.w800,
             letterSpacing: -1.5,
@@ -188,7 +191,7 @@ class _KineticHeadlineState extends State<_KineticHeadline> {
             Text(
               'Senior ',
               style: GoogleFonts.spaceGrotesk(
-                color: AppColors.textSub,
+                color: textSub,
                 fontSize: fs * 0.58,
                 fontWeight: FontWeight.w700,
                 height: 1.2,
@@ -250,7 +253,7 @@ class _Stat extends StatelessWidget {
       Text(
         value,
         style: GoogleFonts.spaceGrotesk(
-          color: AppColors.textPrimary,
+          color: AppColors.primaryText(context),
           fontSize: 28,
           fontWeight: FontWeight.w800,
         ),
@@ -258,7 +261,7 @@ class _Stat extends StatelessWidget {
       Text(
         label,
         style: GoogleFonts.inter(
-          color: AppColors.textMuted,
+          color: AppColors.mutedText(context),
           fontSize: 12,
           letterSpacing: 0.5,
         ),
@@ -299,8 +302,8 @@ class _HeroCta extends StatelessWidget {
       : OutlinedButton(
           onPressed: onTap,
           style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.textPrimary,
-            side: const BorderSide(color: AppColors.glassBorder),
+            foregroundColor: AppColors.primaryText(context),
+            side: BorderSide(color: AppColors.border(context)),
             padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -323,14 +326,14 @@ class _SocialChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ActionChip(
-    avatar: Icon(icon, size: 16, color: AppColors.textSub),
+    avatar: Icon(icon, size: 16, color: AppColors.secondaryText(context)),
     label: Text(
       label,
-      style: const TextStyle(color: AppColors.textSub, fontSize: 12),
+      style: TextStyle(color: AppColors.secondaryText(context), fontSize: 12),
     ),
     onPressed: onTap,
-    backgroundColor: AppColors.surfaceHigh,
-    side: const BorderSide(color: AppColors.glassBorder),
+    backgroundColor: AppColors.surfaceHighColor(context),
+    side: BorderSide(color: AppColors.border(context)),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
   );
 }

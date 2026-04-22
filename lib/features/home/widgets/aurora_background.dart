@@ -25,21 +25,24 @@ class _AuroraBackgroundState extends State<AuroraBackground>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: _ctrl,
-    builder: (_, __) =>
-        CustomPaint(painter: _AuroraPainter(_ctrl.value), size: Size.infinite),
+    builder: (_, __) => CustomPaint(
+      painter: _AuroraPainter(_ctrl.value, AppColors.isDark(context)),
+      size: Size.infinite,
+    ),
   );
 }
 
 class _AuroraPainter extends CustomPainter {
-  const _AuroraPainter(this.t);
+  const _AuroraPainter(this.t, this.isDark);
 
   final double t;
+  final bool isDark;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..color = AppColors.bg,
+      Paint()..color = isDark ? AppColors.bg : AppColors.lightBg,
     );
     _blob(
       canvas,
@@ -47,7 +50,7 @@ class _AuroraPainter extends CustomPainter {
       cx: size.width * (0.12 + 0.08 * math.sin(t * math.pi * 2)),
       cy: size.height * (0.18 + 0.07 * math.cos(t * math.pi * 2)),
       r: size.width * 0.42,
-      color: AppColors.violet.withValues(alpha: 0.13),
+      color: AppColors.violet.withValues(alpha: isDark ? 0.13 : 0.10),
     );
     _blob(
       canvas,
@@ -55,7 +58,7 @@ class _AuroraPainter extends CustomPainter {
       cx: size.width * (0.82 + 0.07 * math.cos(t * math.pi * 2)),
       cy: size.height * (0.14 + 0.09 * math.sin(t * math.pi * 2 + 1.0)),
       r: size.width * 0.38,
-      color: AppColors.teal.withValues(alpha: 0.08),
+      color: AppColors.teal.withValues(alpha: isDark ? 0.08 : 0.07),
     );
     _blob(
       canvas,
@@ -63,7 +66,7 @@ class _AuroraPainter extends CustomPainter {
       cx: size.width * (0.5 + 0.10 * math.sin(t * math.pi * 2 + 2.1)),
       cy: size.height * (0.72 + 0.05 * math.cos(t * math.pi * 2 + 2.1)),
       r: size.width * 0.32,
-      color: AppColors.coral.withValues(alpha: 0.06),
+      color: AppColors.coral.withValues(alpha: isDark ? 0.06 : 0.05),
     );
   }
 
@@ -83,5 +86,5 @@ class _AuroraPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_AuroraPainter old) => old.t != t;
+  bool shouldRepaint(_AuroraPainter old) => old.t != t || old.isDark != isDark;
 }

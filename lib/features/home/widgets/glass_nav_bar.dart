@@ -30,14 +30,17 @@ class GlassNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWide =
         MediaQuery.sizeOf(context).width >= AppConstants.breakpointTablet;
+    final textPrimary = AppColors.primaryText(context);
+    final textSub = AppColors.secondaryText(context);
+    final border = AppColors.border(context);
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           height: 64,
-          decoration: const BoxDecoration(
-            color: Color(0x26080810),
-            border: Border(bottom: BorderSide(color: AppColors.glassBorder)),
+          decoration: BoxDecoration(
+            color: AppColors.navBackground(context),
+            border: Border(bottom: BorderSide(color: border)),
           ),
           child: SafeArea(
             bottom: false,
@@ -50,7 +53,7 @@ class GlassNavBar extends StatelessWidget {
                     child: Text(
                       AppConstants.siteName,
                       style: GoogleFonts.spaceGrotesk(
-                        color: AppColors.textPrimary,
+                        color: textPrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.3,
@@ -99,10 +102,7 @@ class GlassNavBar extends StatelessWidget {
                   if (!isWide)
                     Builder(
                       builder: (ctx) => IconButton(
-                        icon: const Icon(
-                          Icons.menu,
-                          color: AppColors.textPrimary,
-                        ),
+                        icon: Icon(Icons.menu, color: textPrimary),
                         onPressed: () => Scaffold.of(ctx).openDrawer(),
                       ),
                     ),
@@ -111,10 +111,13 @@ class GlassNavBar extends StatelessWidget {
                       isDark
                           ? Icons.light_mode_outlined
                           : Icons.dark_mode_outlined,
-                      color: AppColors.textSub,
+                      color: textSub,
                       size: 20,
                     ),
                     onPressed: onThemeToggle,
+                    tooltip: isDark
+                        ? 'Switch to light mode'
+                        : 'Switch to dark mode',
                   ),
                 ],
               ),
@@ -146,7 +149,9 @@ class _NavLinkState extends State<_NavLink> {
     child: TextButton(
       onPressed: widget.onTap,
       style: TextButton.styleFrom(
-        foregroundColor: _hover ? AppColors.violet : AppColors.textSub,
+        foregroundColor: _hover
+            ? AppColors.violet
+            : AppColors.secondaryText(context),
         textStyle: const TextStyle(fontSize: 14),
       ),
       child: Text(widget.label),

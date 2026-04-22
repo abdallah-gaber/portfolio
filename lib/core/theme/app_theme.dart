@@ -17,6 +17,41 @@ class AppColors {
   static const Color textPrimary = Color(0xFFF0F0FA);
   static const Color textSub = Color(0xFF8A8AB0);
   static const Color textMuted = Color(0xFF4A4A70);
+
+  static const Color lightBg = Color(0xFFF5F7FF);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightSurfaceHigh = Color(0xFFF0F3FF);
+  static const Color lightGlassBorder = Color(0x1A1A2440);
+  static const Color lightTextPrimary = Color(0xFF171A2B);
+  static const Color lightTextSub = Color(0xFF4E5676);
+  static const Color lightTextMuted = Color(0xFF7E86A5);
+
+  static bool isDark(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
+  static Color background(BuildContext context) =>
+      isDark(context) ? bg : lightBg;
+
+  static Color surfaceColor(BuildContext context) =>
+      isDark(context) ? surface : lightSurface;
+
+  static Color surfaceHighColor(BuildContext context) =>
+      isDark(context) ? surfaceHigh : lightSurfaceHigh;
+
+  static Color border(BuildContext context) =>
+      isDark(context) ? glassBorder : lightGlassBorder;
+
+  static Color primaryText(BuildContext context) =>
+      isDark(context) ? textPrimary : lightTextPrimary;
+
+  static Color secondaryText(BuildContext context) =>
+      isDark(context) ? textSub : lightTextSub;
+
+  static Color mutedText(BuildContext context) =>
+      isDark(context) ? textMuted : lightTextMuted;
+
+  static Color navBackground(BuildContext context) =>
+      isDark(context) ? const Color(0x26080810) : const Color(0xCCF5F7FF);
 }
 
 class AppTheme {
@@ -59,14 +94,41 @@ class AppTheme {
     );
   }
 
-  static ThemeData get light => ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF5A4FFF),
+  static ThemeData get light {
+    final cs = ColorScheme.fromSeed(
+      seedColor: AppColors.violet,
       brightness: Brightness.light,
-    ),
-    textTheme: _textTheme(Brightness.light),
-  );
+      primary: AppColors.violet,
+      secondary: AppColors.teal,
+      surface: AppColors.lightSurface,
+      onSurface: AppColors.lightTextPrimary,
+      surfaceContainer: AppColors.lightSurfaceHigh,
+    );
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: cs,
+      scaffoldBackgroundColor: AppColors.lightBg,
+      textTheme: _textTheme(Brightness.light),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        titleTextStyle: GoogleFonts.spaceGrotesk(
+          color: AppColors.lightTextPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: AppColors.lightSurfaceHigh,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.lightGlassBorder, width: 1),
+        ),
+      ),
+    );
+  }
 
   static TextTheme _textTheme(Brightness b) {
     final isLight = b == Brightness.light;

@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
     final isNarrow =
         MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
     return Scaffold(
-      backgroundColor: AppColors.bg,
+      backgroundColor: AppColors.background(context),
       drawer: isNarrow ? _drawer(context) : null,
       body: Stack(
         children: [

@@ -46,7 +46,7 @@ class ContactSection extends StatelessWidget {
                         'Have a project in mind?',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.spaceGrotesk(
-                          color: AppColors.textPrimary,
+                          color: AppColors.primaryText(context),
                           fontSize: 28,
                           fontWeight: FontWeight.w700,
                         ),
@@ -56,7 +56,7 @@ class ContactSection extends StatelessWidget {
                         "I'm available for freelance, consulting, or full-time opportunities.",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          color: AppColors.textSub,
+                          color: AppColors.secondaryText(context),
                           fontSize: 15,
                           height: 1.6,
                         ),
@@ -84,16 +84,16 @@ class ContactSection extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.location_on_outlined,
                             size: 14,
-                            color: AppColors.textMuted,
+                            color: AppColors.mutedText(context),
                           ),
                           const SizedBox(width: 6),
                           Text(
                             AppConstants.location,
                             style: GoogleFonts.inter(
-                              color: AppColors.textMuted,
+                              color: AppColors.mutedText(context),
                               fontSize: 13,
                             ),
                           ),

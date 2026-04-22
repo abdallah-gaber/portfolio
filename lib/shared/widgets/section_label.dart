@@ -19,7 +19,7 @@ class SectionLabel extends StatelessWidget {
       Text(
         label.toUpperCase(),
         style: GoogleFonts.inter(
-          color: AppColors.textMuted,
+          color: AppColors.mutedText(context),
           fontSize: 12,
           fontWeight: FontWeight.w700,
           letterSpacing: 2.0,

@@ -19,6 +19,11 @@ class ExperienceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final surface = AppColors.surfaceHighColor(context);
+    final border = AppColors.border(context);
+    final textPrimary = AppColors.primaryText(context);
+    final textSub = AppColors.secondaryText(context);
+    final textMuted = AppColors.mutedText(context);
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,9 +73,9 @@ class ExperienceCard extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 24),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.surfaceHigh,
+                color: surface,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.glassBorder),
+                border: Border.all(color: border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +83,7 @@ class ExperienceCard extends StatelessWidget {
                   Text(
                     item.role,
                     style: GoogleFonts.spaceGrotesk(
-                      color: AppColors.textPrimary,
+                      color: textPrimary,
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
@@ -95,10 +100,7 @@ class ExperienceCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     item.period,
-                    style: GoogleFonts.inter(
-                      color: AppColors.textMuted,
-                      fontSize: 12,
-                    ),
+                    style: GoogleFonts.inter(color: textMuted, fontSize: 12),
                   ),
                   if (expanded && item.bullets.isNotEmpty) ...[
                     const SizedBox(height: 14),
@@ -120,7 +122,7 @@ class ExperienceCard extends StatelessWidget {
                               child: Text(
                                 b,
                                 style: GoogleFonts.inter(
-                                  color: AppColors.textSub,
+                                  color: textSub,
                                   fontSize: 14,
                                   height: 1.5,
                                 ),
@@ -165,14 +167,14 @@ class _TechTag extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: AppColors.surface,
+      color: AppColors.surfaceColor(context),
       borderRadius: BorderRadius.circular(6),
-      border: Border.all(color: AppColors.glassBorder),
+      border: Border.all(color: AppColors.border(context)),
     ),
     child: Text(
       label,
       style: GoogleFonts.spaceGrotesk(
-        color: AppColors.textMuted,
+        color: AppColors.mutedText(context),
         fontSize: 11,
         fontWeight: FontWeight.w600,
       ),
