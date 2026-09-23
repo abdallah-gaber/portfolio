@@ -16,6 +16,7 @@ class Post {
   final DateTime date;
   final List<String> tags;
   final bool draft;
+  final String? ogImage;
 
   Post(
     this.slug,
@@ -24,10 +25,12 @@ class Post {
     this.date,
     this.tags,
     this.draft,
-    this.body,
-  );
+    this.body, {
+    this.ogImage,
+  });
 
   String get path => '/blog/$slug/';
+  String get socialImageUrl => '$siteUrl${ogImage ?? '/og_image.jpg'}';
   String get isoDate => date.toIso8601String().substring(0, 10);
   String get displayDate {
     const months = [
@@ -88,6 +91,17 @@ class Post {
     }
     final body = match.group(2)!.trim();
     if (body.isEmpty) invalid('The article body is empty.');
+    String? ogImage;
+    if (data.containsKey('ogImage')) {
+      ogImage = field('ogImage');
+      if (!RegExp(
+        r'^/blog/images/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.(?:png|jpg|jpeg|webp|gif)$',
+      ).hasMatch(ogImage)) {
+        invalid(
+          'ogImage must be a /blog/images/ path to a PNG, JPEG, WebP, or GIF.',
+        );
+      }
+    }
     return Post(
       slug,
       title,
@@ -96,6 +110,7 @@ class Post {
       tags.cast<String>().map((tag) => tag.trim()).toSet().toList(),
       draft,
       body,
+      ogImage: ogImage,
     );
   }
 }
@@ -112,12 +127,16 @@ String renderPage(
   bool article = false,
   bool noindex = false,
   String extraHead = '',
+  String socialImageUrl = '$siteUrl/og_image.jpg',
+  String socialImageAlt = 'Abdallah Gaber — mobile engineer and team lead',
 }) {
   final values = {
     'TITLE': escape(title),
     'DESCRIPTION': escape(summary),
     'URL': '$siteUrl$path',
     'TYPE': article ? 'article' : 'website',
+    'IMAGE': const HtmlEscape(HtmlEscapeMode.attribute).convert(socialImageUrl),
+    'IMAGE_ALT': escape(socialImageAlt),
     'HEAD':
         '${noindex ? '<meta name="robots" content="noindex, nofollow">' : ''}$extraHead',
     'CONTENT': content,
@@ -125,7 +144,7 @@ String renderPage(
   };
   // Replace template tokens once; article text is never treated as a template.
   return template.replaceAllMapped(
-    RegExp(r'\{\{([A-Z]+)\}\}'),
+    RegExp(r'\{\{([A-Z_]+)\}\}'),
     (match) => values[match.group(1)] ?? match.group(0)!,
   );
 }
@@ -154,6 +173,17 @@ void buildBlog({
           return dateOrder == 0 ? a.slug.compareTo(b.slug) : dateOrder;
         });
   final template = File('${root.path}/blog/layout.html').readAsStringSync();
+  for (final post in posts) {
+    final image = post.ogImage;
+    if (image != null &&
+        !File(
+          '${root.path}/content/images/${image.substring('/blog/images/'.length)}',
+        ).existsSync()) {
+      throw FormatException(
+        '${post.slug}.md: ogImage file does not exist: $image',
+      );
+    }
+  }
   final empty = File('${root.path}/blog/empty.html').readAsStringSync();
   // Validate all content before replacing generated files. Only this owned
   // output directory is removed, so deleted posts and drafts cannot linger.
@@ -223,7 +253,7 @@ void buildBlog({
       'datePublished': post.isoDate,
       'author': {'@type': 'Person', 'name': author, 'url': siteUrl},
       'mainEntityOfPage': '$siteUrl${post.path}',
-      'image': '$siteUrl/og_image.jpg',
+      'image': post.socialImageUrl,
     }).replaceAll('<', r'\u003c');
     write(
       'blog/${post.slug}/index.html',
@@ -233,6 +263,10 @@ void buildBlog({
         summary: post.description,
         path: post.path,
         article: true,
+        socialImageUrl: post.socialImageUrl,
+        socialImageAlt: post.ogImage == null
+            ? 'Abdallah Gaber — mobile engineer and team lead'
+            : post.title,
         noindex: preview || post.draft,
         extraHead:
             '''<meta property="article:published_time" content="${post.isoDate}">

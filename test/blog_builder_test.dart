@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -25,6 +26,10 @@ if (count < 2) print('hello');
 ```
 
 ![Data flow](/blog/images/lesson/diagram.svg)
+
+```yaml
+enabled: true
+```
 ''';
 
 void main() {
@@ -86,6 +91,7 @@ void main() {
       expect(page, contains('Flutter &amp; &lt;friends&gt;'));
       expect(page, contains('<h2 id="the-problem">The problem</h2>'));
       expect(page, contains('class="language-dart"'));
+      expect(page, contains('<code class="language-yaml">enabled: true'));
       expect(page, contains('count &lt; 2'));
       expect(page, contains('application/ld+json'));
       expect(page, contains('https://abdallahgaber.dev/blog/newer/'));
@@ -127,6 +133,85 @@ void main() {
       isFalse,
     );
     expect(read('sitemap.xml'), isNot(contains('/removed/')));
+  });
+
+  test('custom social image is copied and used in all article metadata', () {
+    add(
+      'custom',
+      article().replaceFirst(
+        'draft: false',
+        'draft: false\nogImage: "/blog/images/covers/example.png"',
+      ),
+    );
+    final image = File('${root.path}/content/images/covers/example.png');
+    image.parent.createSync(recursive: true);
+    image.writeAsBytesSync([1, 2, 3]);
+    build();
+    const url = '$siteUrl/blog/images/covers/example.png';
+    final page = read('blog/custom/index.html');
+    expect(page, contains('<meta property="og:image" content="$url">'));
+    expect(page, contains('<meta name="twitter:image" content="$url">'));
+    expect(
+      page,
+      contains('<meta property="og:image:alt" content="A useful lesson">'),
+    );
+    expect(page, isNot(contains('{{IMAGE_ALT}}')));
+    final json = RegExp(
+      r'<script type="application/ld\+json">(.*?)</script>',
+    ).firstMatch(page)!.group(1)!;
+    expect(jsonDecode(json)['image'], url);
+    expect(
+      File('${output.path}/blog/images/covers/example.png').readAsBytesSync(),
+      [1, 2, 3],
+    );
+    expect(read('blog/index.html'), contains('$siteUrl/og_image.jpg'));
+  });
+
+  test('posts without ogImage retain default social metadata', () {
+    add('default-image', article());
+    build();
+    final page = read('blog/default-image/index.html');
+    expect(
+      page,
+      contains('<meta property="og:image" content="$siteUrl/og_image.jpg">'),
+    );
+    expect(
+      page,
+      contains('<meta name="twitter:image" content="$siteUrl/og_image.jpg">'),
+    );
+    expect(page, contains('"image":"$siteUrl/og_image.jpg"'));
+  });
+
+  test('invalid or missing social images fail before replacing output', () {
+    build();
+    final before = read('blog/index.html');
+    for (final image in [
+      'https://example.com/image.png',
+      '../images/a.png',
+      '/blog/images/../secret.png',
+      '/blog/images/a.svg',
+      '',
+    ]) {
+      expect(
+        () => Post.parse(
+          'invalid',
+          article().replaceFirst(
+            'draft: false',
+            'draft: false\nogImage: "$image"',
+          ),
+        ),
+        throwsFormatException,
+      );
+    }
+    add(
+      'missing-image',
+      article().replaceFirst(
+        'draft: false',
+        'draft: false\nogImage: "/blog/images/missing.png"',
+      ),
+    );
+    expect(build, throwsFormatException);
+    expect(read('blog/index.html'), before);
   });
 
   test('invalid metadata fails before altering the existing output', () {
