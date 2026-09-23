@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:portfolio/core/constants/app_constants.dart';
 import 'package:portfolio/core/theme/app_theme.dart';
 import 'package:portfolio/core/utils/launch_url.dart';
@@ -38,6 +39,10 @@ class _HomePageState extends State<HomePage> {
   };
 
   void _scrollTo(String id) {
+    if (id == 'blog') {
+      launchUrl(Uri.base.resolve('/blog/'), webOnlyWindowName: '_self');
+      return;
+    }
     final ctx = _keys[id]?.currentContext;
     if (ctx == null) return;
     Scrollable.ensureVisible(
@@ -62,7 +67,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final isNarrow =
-        MediaQuery.sizeOf(context).width < AppConstants.breakpointTablet;
+        MediaQuery.sizeOf(context).width < GlassNavBar.expandedBreakpoint;
     return Scaffold(
       backgroundColor: AppColors.background(context),
       drawer: isNarrow ? _drawer(context) : null,
@@ -136,6 +141,7 @@ class _HomePageState extends State<HomePage> {
           'Experience': 'experience',
           'Projects': 'projects',
           'Skills': 'skills',
+          'Blog': 'blog',
           'Contact': 'contact',
         }.entries)
           ListTile(

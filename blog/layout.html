@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="author" content="Abdallah Gaber">
+  <meta name="theme-color" content="#080810">
+  <link rel="canonical" href="{{URL}}">
+  <link rel="icon" href="/favicon.ico">
+  <meta property="og:type" content="{{TYPE}}">
+  <meta property="og:site_name" content="Abdallah Gaber">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="{{URL}}">
+  <meta property="og:image" content="https://abdallahgaber.dev/og_image.jpg">
+  <meta property="og:image:alt" content="Abdallah Gaber — mobile engineer and team lead">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{TITLE}}">
+  <meta name="twitter:description" content="{{DESCRIPTION}}">
+  <meta name="twitter:image" content="https://abdallahgaber.dev/og_image.jpg">
+  {{HEAD}}
+  <script src="/blog/assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/assets/blog.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav aria-label="Main navigation" class="nav-inner">
+      <a class="wordmark" href="/">Abdallah Gaber<span aria-hidden="true">.</span></a>
+      <div class="nav-actions">
+        <a class="portfolio-link" href="/">Portfolio <span aria-hidden="true">↗</span></a>
+        <a class="active-link" href="/blog/">Blog</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to light mode" hidden>
+          <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+          <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+  <main id="main" tabindex="-1">{{CONTENT}}</main>
+  <footer class="site-footer"><span>© {{YEAR}} Abdallah Gaber</span><span>Built with care. Shared with curiosity.</span></footer>
+</body>
+</html>

@@ -2,7 +2,9 @@
   "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "build/web",
   "rewrites": [
-    { "source": "/((?!.*\\.).*)", "destination": "/index.html" }
+    { "source": "/blog", "destination": "/blog/index.html" },
+    { "source": "/blog/:slug", "destination": "/blog/:slug/index.html" },
+    { "source": "/((?!blog(?:/|$)|.*\\.).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
