@@ -41,6 +41,22 @@ reserved. Posts are sorted newest first, then by slug for matching dates. Dates
 are display metadata, not scheduling: `draft: false` publishes at the next build,
 even if the date is in the future.
 
+## Per-post social images
+
+Optionally add `ogImage` to frontmatter using a published, root-relative image path:
+
+```yaml
+ogImage: "/blog/images/my-post-cover.png"
+```
+
+Place that file at `content/images/my-post-cover.png`. Subfolders work too.
+The generator validates that the file exists and produces an absolute production
+URL for Open Graph, Twitter/X, and the article's JSON-LD image. Supported formats
+are PNG, JPEG, WebP, and GIF, with letters, numbers, hyphens, and underscores in
+filenames. External URLs and relative filesystem paths are not accepted.
+Omit the field to retain the global `/og_image.jpg` fallback. This field controls
+social metadata only; add a Markdown image to display the cover in the article.
+
 ## Images
 
 Put optimized images in `content/images/your-post-slug/`, then use a root-relative
@@ -88,7 +104,7 @@ pages. Python serves the directory URLs, but Vercel-specific rewrites and HTTP
 - `/blog/`: empty state until the first published article, then post cards.
 - `/blog/<filename>/`: HTML article with date, tags, code blocks, and images.
 - Per-page title, description, canonical URL, social metadata, and article JSON-LD.
-- The existing portfolio share image is reused; titles/descriptions vary per post.
+- Optional `ogImage` selects a post-specific share image; otherwise the portfolio image is reused.
 - A sitemap preserving the portfolio entries and adding published article URLs.
 - A themed 404 page; unknown blog URLs must never fall through to Flutter.
 

@@ -10,7 +10,10 @@ tags:
   - On-Device AI
   - Generative AI
 draft: false
+ogImage: "/blog/images/ai-integration-modern-mobile-apps-cover.png"
 ---
+
+![AI in Modern Mobile Apps — On-Device vs Cloud](/blog/images/ai-integration-modern-mobile-apps-cover.png)
 
 Generative AI discussions often focus on backend patterns: RAG, embeddings, reranking, agents, tool calling, and evaluation pipelines.
 
@@ -18,9 +21,7 @@ For mobile engineers, however, there is another architectural question that come
 
 > **What intelligence should happen on the device before we send anything to a backend or an external AI provider?**
 
-Modern mobile platforms are increasingly capable of running AI locally. This creates a new architectural layer for mobile applications:
-
-> **The AI Capability Layer**
+Modern mobile platforms are increasingly capable of running AI locally. A useful way to model this in a mobile architecture is to introduce what we can call an **AI Capability Layer**.
 
 The goal of this layer is not to replace the application. It is to help the application understand the user better, process data closer to the user, and reduce unnecessary reliance on cloud AI.
 
@@ -99,44 +100,15 @@ Your application behavior should remain deterministic where correctness matters.
 
 ## The On-Device AI Layer
 
-A useful way to think about mobile AI is:
+A useful way to think about mobile AI is this split between interpretation and execution:
 
-```text
-┌───────────────────────────────┐
-│              UI               │
-└───────────────┬───────────────┘
-                │
-        Natural Language
-        Image / Voice / Text
-                │
-                ▼
-┌───────────────────────────────┐
-│       AI Capability Layer     │
-│                               │
-│ • Intent Classification       │
-│ • Entity Extraction           │
-│ • Summarization               │
-│ • Rewrite                     │
-│ • Image Understanding         │
-│ • Privacy Filtering           │
-└───────────────┬───────────────┘
-                │
-          Structured Data
-                │
-                ▼
-┌───────────────────────────────┐
-│      Application Layer        │
-│                               │
-│ Use Cases / Business Rules    │
-└───────────────┬───────────────┘
-                │
-                ▼
-             Backend
-```
+![Modern mobile AI architecture showing UI, voice, system AI, the AI capability layer, application use cases, local actions, backend, and backend AI](/blog/images/ai-integration-modern-mobile-apps-architecture.png)
 
 The AI layer **interprets**.
 
 The application layer **decides and executes**.
+
+That one line is one of the most important architectural rules in modern app design.
 
 ---
 
@@ -144,7 +116,7 @@ The application layer **decides and executes**.
 
 One of the most interesting mobile use cases is treating natural language as another interaction mechanism.
 
-Today we have:
+Today we already have:
 
 ```text
 Touch
@@ -261,8 +233,6 @@ Personal notes
 
 If the device can perform the operation locally, sending the raw data to a remote AI service may be unnecessary.
 
----
-
 ### Small and Bounded
 
 Examples:
@@ -277,8 +247,6 @@ Determine which app feature the user wants.
 ```
 
 These are strong candidates for local models.
-
----
 
 ### Latency-Sensitive
 
@@ -295,8 +263,6 @@ Mobile → Backend → AI Provider → Backend → Mobile
 ```
 
 just to identify an intent can be unnecessary if the device can resolve it locally.
-
----
 
 ### Offline-Capable
 
@@ -332,6 +298,8 @@ Model availability differences
 This creates an important architectural consequence:
 
 > **Never assume that your AI feature will behave identically across every device.**
+
+Device support is only one part of capability detection. Language and locale support also matter. A feature that works well for English on one device may not provide the same quality for Arabic, mixed-language input, or regional dialects. Treat model availability, locale support, and task quality as runtime capabilities rather than installation-time assumptions.
 
 For a Flutter application, a sensible abstraction might be:
 
@@ -646,16 +614,16 @@ The boundary between AI and the application should not be.
 
 | Requirement | Local AI | Backend AI |
 |---|---|---|
-| Intent classification | Excellent | Usually unnecessary |
-| Text rewrite | Excellent | Good |
-| Short summary | Excellent | Good |
-| OCR / image preprocessing | Excellent | Sometimes |
-| Extract form fields | Excellent | Good |
+| Intent classification | Strong fit | Usually unnecessary |
+| Text rewrite | Strong fit | Good |
+| Short summary | Strong fit | Good |
+| OCR / image preprocessing | Strong fit | Sometimes |
+| Extract form fields | Strong fit | Good |
 | Offline feature | Required | Impossible |
 | Large knowledge base | Limited | Excellent |
 | RAG | Limited / mobile-specific | Excellent |
 | Complex reasoning | Limited | Better |
-| Enterprise data access | Avoid | Preferred |
+| Enterprise data access | Limited / cached data only | Preferred |
 | Multi-user information | Avoid | Backend |
 | Long-running agent | Poor fit | Good |
 | Cross-service orchestration | Poor fit | Excellent |
@@ -688,8 +656,6 @@ Cloud Optional
 ```
 
 The risk is relatively low because the model usually operates on content already available to the user.
-
----
 
 ### E-Commerce
 
@@ -729,8 +695,6 @@ Backend Data
 Optional Cloud AI
 ```
 
----
-
 ### Government and Enterprise Applications
 
 Good local candidates:
@@ -764,8 +728,6 @@ Controlled Enterprise Backend AI
 ```
 
 Sending raw documents directly from the mobile application to an arbitrary public AI API should generally not be the default architecture.
-
----
 
 ### Banking and FinTech
 
@@ -801,8 +763,6 @@ NOT
 AI = Authority
 ```
 
----
-
 ### Healthcare
 
 Local processing can be valuable for:
@@ -817,8 +777,6 @@ Private note summarization
 But sensitive information leaving the device requires stronger governance, access control, legal review, and vendor controls.
 
 For these applications, **data minimization before cloud processing** becomes especially important.
-
----
 
 ### Messaging and Productivity Apps
 
@@ -859,7 +817,7 @@ Your App
 
 Operating systems are moving toward application capabilities that can be exposed to system assistants and agents.
 
-This means that a future-friendly application should not assume that the UI is the only entry point into its capabilities.
+That means a future-friendly application should not assume that the UI is the only entry point into its capabilities.
 
 Today we often design:
 
@@ -893,90 +851,7 @@ to multiple interfaces.
 
 The UI becomes one client of the application — not the only client.
 
----
-
-## A Modern Mobile AI Architecture
-
-A future-friendly mobile architecture could look like this:
-
-```text
-                 ┌──────────────┐
-                 │     User     │
-                 └──────┬───────┘
-                        │
-       ┌────────────────┼─────────────────┐
-       │                │                 │
-      UI              Voice          System AI
-                                         │
-                                         │
-                    ┌────────────────────┘
-                    ▼
-            ┌─────────────────┐
-            │ AI Capability   │
-            │ Layer           │
-            │                 │
-            │ Intent          │
-            │ Extraction      │
-            │ Classification  │
-            │ Summarization   │
-            └────────┬────────┘
-                     │
-                     ▼
-             Structured Intent
-                     │
-                     ▼
-             ┌───────────────┐
-             │ Application   │
-             │ Use Cases     │
-             └───────┬───────┘
-                     │
-          ┌──────────┴───────────┐
-          │                      │
-      Local Action             Backend
-                                 │
-                      ┌──────────┴──────────┐
-                      │                     │
-                Normal Services          AI Layer
-                                         │
-                                    RAG / Agents
-                                    Tools / LLM
-```
-
-Notice something important:
-
-There are **two different AI layers**.
-
-### Mobile AI
-
-Optimized for:
-
-```text
-Privacy
-Interaction
-Latency
-Offline
-Device context
-```
-
-### Backend AI
-
-Optimized for:
-
-```text
-Large context
-Large models
-Enterprise data
-RAG
-Agents
-Orchestration
-Centralized governance
-```
-
-They solve different problems.
-
-They should not compete.
-
-They should complement each other.
+> **Note:** On Android, AppFunctions is promising here, but it is still in experimental preview at the time of writing. Think of this direction as important and real, but not yet something you should assume is broadly available in production across the ecosystem.
 
 ---
 
@@ -1015,6 +890,22 @@ VendorSdk
 ```
 
 This protects the domain from platform-specific AI decisions.
+
+A useful way to think about the boundary is:
+
+```text
+Flutter / Dart
+      ↓
+IntentResolver
+      ↓
+┌──────────────────────────┐
+│ Platform Implementation  │
+├──────────────────────────┤
+│ Android → On-device AI   │
+│ iOS     → Foundation     │
+│ Fallback → Cloud         │
+└──────────────────────────┘
+```
 
 A typical flow could be:
 
@@ -1105,3 +996,14 @@ This produces applications that are:
 Most importantly:
 
 > **AI should become another capability of the application — not the architecture of the application itself.**
+
+---
+
+## Further Reading
+
+- [Android — Gemini Nano](https://developer.android.com/ai/gemini-nano)
+- [Android — ML Kit GenAI Prompt API](https://developer.android.com/agents/skills/device-ai/ml-kit-genai-prompt-api/references/get-started)
+- [Android — AppFunctions](https://developer.android.com/ai/appfunctions)
+- [Apple — Foundation Models](https://developer.apple.com/documentation/foundationmodels)
+- [Apple — Foundation Models: supported languages](https://developer.apple.com/documentation/foundationmodels/systemlanguagemodel/supportedlanguages)
+- [Apple — App Intents](https://developer.apple.com/documentation/appintents)
