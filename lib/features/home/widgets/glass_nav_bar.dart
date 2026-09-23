@@ -5,6 +5,8 @@ import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
 class GlassNavBar extends StatelessWidget {
+  // Keep the expanded navigation readable with the Blog link included.
+  static const double expandedBreakpoint = 1100;
   const GlassNavBar({
     super.key,
     required this.isDark,
@@ -23,13 +25,14 @@ class GlassNavBar extends StatelessWidget {
     ('Experience', 'experience'),
     ('Projects', 'projects'),
     ('Skills', 'skills'),
+    ('Blog', 'blog'),
     ('Contact', 'contact'),
   ];
 
   @override
   Widget build(BuildContext context) {
     final isWide =
-        MediaQuery.sizeOf(context).width >= AppConstants.breakpointTablet;
+        MediaQuery.sizeOf(context).width >= expandedBreakpoint;
     final textPrimary = AppColors.primaryText(context);
     final textSub = AppColors.secondaryText(context);
     final border = AppColors.border(context);

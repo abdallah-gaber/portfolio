@@ -29,7 +29,17 @@ Featured project media currently available in the repo:
 
 ![Hood's Seller screenshot](assets/images/placeholder_hoods_seller.jpeg)
 
-## How to run
+## Blog
+
+The `/blog/` section is generated as static HTML from `content/posts/*.md`.
+See [the publishing walkthrough](docs/blog-authoring.md) for drafts, previews,
+images, and adding your first article. Copy [the post template](docs/post-template.md)
+to start writing. No posts are published in the foundation release.
+
+For a complete local production build, run `dart run scripts/build_blog.dart`
+after `flutter build web`. The Vercel build performs both steps automatically.
+
+## Running the portfolio
 
 **Prerequisites:** Flutter SDK (stable channel, with web support).
 
@@ -110,25 +120,23 @@ docs/
 
 ## Deploy
 
-- **Build:** `flutter build web`
+- **Build:** `flutter build web`, then `dart run scripts/build_blog.dart`
 - **Output:** `build/web/` (static assets + `index.html`, `main.dart.js`, etc.)
 
 ### Vercel
 
 `vercel.json` is configured with:
 
-- **buildCommand:** `flutter build web`
+- **buildCommand:** `bash vercel-build.sh` (installs Flutter, builds the portfolio, then generates the blog)
 - **outputDirectory:** `build/web` (so Vercel serves the Flutter build, not the repo root)
-- **rewrites:** Paths without a file extension are rewritten to `/index.html` (SPA fallback so direct URLs and refresh work)
+- **rewrites:** `/blog` and article URLs serve generated HTML; other extensionless paths retain the Flutter SPA fallback. Missing blog pages return 404.
 - **headers:** Preserved for `apple-app-site-association` and `.well-known/`
 
 Vercel’s default build image does not include Flutter. In the project **Settings → Build & Development**:
 
 1. Set **Framework Preset** to **Other**.
-2. Set **Install Command** to one of:
-   - A command that installs Flutter (e.g. clone the Flutter SDK and run `flutter pub get`), or
-   - Use a [Flutter-compatible build image or community template](https://vercel.com/docs/deployments/configure-a-build) if available.
-3. Build Command and Output Directory are overridden by `vercel.json` (`flutter build web` and `build/web`).
+2. Leave **Install Command** empty; `vercel-build.sh` downloads the pinned Flutter SDK and resolves dependencies.
+3. Build Command and Output Directory are overridden by `vercel.json` (`bash vercel-build.sh` and `build/web`).
 
 If you see **NOT_FOUND (404)** after deploy, the usual cause is the output directory not set to `build/web` (so `index.html` is not found). The rewrites fix 404s for in-app paths (e.g. opening `/about` directly).
 

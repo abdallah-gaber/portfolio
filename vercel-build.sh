@@ -17,3 +17,6 @@ flutter pub get
 
 # Build release web output
 flutter build web --release --base-href "/"
+
+# Add the Markdown blog after Flutter has written its output directory.
+dart run scripts/build_blog.dart
